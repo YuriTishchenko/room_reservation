@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -30,3 +30,17 @@ async def get_room_id_by_name(
     )
     db_room_id = db_room_id.scalars().first()
     return db_room_id
+
+
+async def read_all_rooms_from_db(session: AsyncSession) -> List[MeetingRoom]:
+    result = await session.execute(select(MeetingRoom))
+    db_rooms = result.scalars().all()
+    return db_rooms
+
+async def get_meeting_room_by_id(room_id: int, session: AsyncSession) -> Optional[MeetingRoom]:
+    db_room = await session.execute(
+        select(MeetingRoom).where(
+            MeetingRoom.id == room_id
+        )
+    )
+    return db_room.scalars().first()
