@@ -37,6 +37,7 @@ async def read_all_rooms_from_db(session: AsyncSession) -> List[MeetingRoom]:
     db_rooms = result.scalars().all()
     return db_rooms
 
+
 async def get_meeting_room_by_id(room_id: int, session: AsyncSession) -> Optional[MeetingRoom]:
     db_room = await session.execute(
         select(MeetingRoom).where(
