@@ -1,11 +1,7 @@
 import asyncio
-# Импортируем модуль стандартной библиотеки для работы с ОС.
 import os
 from logging.config import fileConfig
 
-# Импортируем функцию для чтения файлов с переменными окружения
-# из библиотеки python-dotenv. Эта библиотека была установлена
-# вместе с uvicorn.
 from dotenv import load_dotenv
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
@@ -30,11 +26,8 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
-target_metadata = Base.metadata
-print(target_metadata.tables)
 
+target_metadata = Base.metadata
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
@@ -66,7 +59,11 @@ def run_migrations_offline():
 
 
 def do_run_migrations(connection):
-    context.configure(connection=connection, target_metadata=target_metadata)
+    context.configure(
+        connection=connection, 
+        target_metadata=target_metadata,
+        render_as_batch=True,
+    )
 
     with context.begin_transaction():
         context.run_migrations()

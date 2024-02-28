@@ -11,13 +11,6 @@ class MeetingRoomBase(BaseModel):
 class MeetingRoomCreate(MeetingRoomBase):
     name: str = Field(..., min_length=1, max_length=100)
 
-
-class MeetingRoomDB(MeetingRoomCreate):
-    id: int
-
-    class Config:
-        orm_mode = True 
-
 class MeetingRoomUpdate(MeetingRoomBase):
 
     @validator('name')
@@ -25,4 +18,9 @@ class MeetingRoomUpdate(MeetingRoomBase):
         if value is None:
             raise ValueError('Имя переговорки не может быть пустым!')
         return value
+    
+class MeetingRoomDB(MeetingRoomCreate):
+    id: int
 
+    class Config:
+        orm_mode = True
